@@ -473,14 +473,14 @@ module.exports = (plugin) => {
   // USER CONTROLLER
 
   plugin.controllers.user.update = async (ctx) => {
+    const authUser = ctx.state.user;
     const advancedConfigs = await strapi
       .store({ type: "plugin", name: "users-permissions", key: "advanced" })
       .get();
 
-    const { id } = ctx.params;
     const { email, username, password } = ctx.request.body;
 
-    const user = await getService("user").fetch(id);
+    const user = await getService("user").fetch(authUser.id);
     if (!user) {
       throw new NotFoundError(`User not found`);
     }
@@ -502,7 +502,7 @@ module.exports = (plugin) => {
 
       if (
         userWithSameUsername &&
-        _.toString(userWithSameUsername.id) !== _.toString(id)
+        _.toString(userWithSameUsername.id) !== _.toString(authUser.id)
       ) {
         throw new ApplicationError("Username already taken");
       }
@@ -515,7 +515,7 @@ module.exports = (plugin) => {
 
       if (
         userWithSameEmail &&
-        _.toString(userWithSameEmail.id) !== _.toString(id)
+        _.toString(userWithSameEmail.id) !== _.toString(authUser.id)
       ) {
         throw new ApplicationError("Email already taken");
       }
@@ -574,7 +574,7 @@ module.exports = (plugin) => {
   // USER ROUTES
 
   plugin.routes["content-api"].routes.push({
-    method: "POST",
+    method: "PUT",
     path: "/user/update",
     handler: "user.update",
     config: {
