@@ -3,7 +3,7 @@ module.exports = (plugin) => {
   // AUTH ROUTES
   plugin.routes["content-api"].routes.push({
     method: "POST",
-    path: "/auth/login",
+    path: "/auth/user/login",
     handler: "user.login",
     config: {
       prefix: "",
@@ -12,7 +12,7 @@ module.exports = (plugin) => {
 
   plugin.routes["content-api"].routes.push({
     method: "POST",
-    path: "/auth/register",
+    path: "/auth/user/register",
     handler: "user.register",
     config: {
       prefix: "",
@@ -21,7 +21,7 @@ module.exports = (plugin) => {
 
   plugin.routes["content-api"].routes.push({
     method: "POST",
-    path: "/auth/change-password",
+    path: "/auth/user/change-password",
     handler: "user.changePassword",
     config: {
       prefix: "",
@@ -30,7 +30,7 @@ module.exports = (plugin) => {
 
   plugin.routes["content-api"].routes.push({
     method: "POST",
-    path: "/auth/reset-password",
+    path: "/auth/user/reset-password",
     handler: "user.resetPassword",
     config: {
       prefix: "",
@@ -39,7 +39,7 @@ module.exports = (plugin) => {
 
   plugin.routes["content-api"].routes.push({
     method: "POST",
-    path: "/auth/forgot-password",
+    path: "/auth/user/forgot-password",
     handler: "user.forgotPassword",
     config: {
       prefix: "",

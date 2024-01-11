@@ -350,6 +350,7 @@ module.exports = (plugin) => {
     const userInfo = await sanitizeUser(user, ctx);
 
     const resetPasswordToken = crypto.randomBytes(64).toString("hex");
+    console.log('resetPasswordToken', resetPasswordToken)
 
     const resetPasswordSettings = _.get(
       emailSettings,
