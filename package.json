@@ -2,7 +2,7 @@
   "name": "latest",
   "private": true,
   "version": "0.1.0",
-  "description": "A Strapi application",
+  "description": "Server REST",
   "scripts": {
     "develop": "strapi develop",
     "start": "strapi start",
@@ -23,7 +23,7 @@
     "styled-components": "5.3.3"
   },
   "author": {
-    "name": "A Strapi developer"
+    "name": "HL developer"
   },
   "strapi": {
     "uuid": "98810a14-977c-4ab0-a05c-e1dc92ac9604"
