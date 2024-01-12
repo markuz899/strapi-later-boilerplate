@@ -63,10 +63,12 @@ module.exports = (plugin) => {
         });
 
       if (!user) {
+        strapi.log.error("Invalid identifier or password");
         throw new ValidationError("Invalid identifier or password");
       }
 
       if (!user.password) {
+        strapi.log.error("Invalid identifier or password");
         throw new ValidationError("Invalid identifier or password");
       }
 
@@ -76,6 +78,7 @@ module.exports = (plugin) => {
       );
 
       if (!validPassword) {
+        strapi.log.error("Invalid identifier or password");
         throw new ValidationError("Invalid identifier or password");
       }
 
@@ -86,10 +89,12 @@ module.exports = (plugin) => {
       );
 
       if (requiresConfirmation && user.confirmed !== true) {
+        strapi.log.error("Your account email is not confirmed");
         throw new ApplicationError("Your account email is not confirmed");
       }
 
       if (user.blocked === true) {
+        strapi.log.error("Your account has been blocked by an administrator");
         throw new ApplicationError(
           "Your account has been blocked by an administrator"
         );
@@ -106,6 +111,7 @@ module.exports = (plugin) => {
       const user = await getService("providers").connect(provider, ctx.query);
 
       if (user.blocked) {
+        strapi.log.error("Your account has been blocked by an administrator");
         throw new ForbiddenError(
           "Your account has been blocked by an administrator"
         );
@@ -189,6 +195,7 @@ module.exports = (plugin) => {
       .findOne({ where: { type: settings.default_role } });
 
     if (!role) {
+      strapi.log.error("Impossible to find the default role");
       throw new ApplicationError("Impossible to find the default role");
     }
 
@@ -211,6 +218,7 @@ module.exports = (plugin) => {
       });
 
     if (conflictingUserCount > 0) {
+      strapi.log.error("Email or Username are already taken");
       throw new ApplicationError("Email or Username are already taken");
     }
 
@@ -223,6 +231,7 @@ module.exports = (plugin) => {
         });
 
       if (conflictingUserCount > 0) {
+        strapi.log.error("Email or Username are already taken");
         throw new ApplicationError("Email or Username are already taken");
       }
     }
@@ -245,6 +254,7 @@ module.exports = (plugin) => {
       try {
         await getService("user").sendConfirmationEmail(sanitizedUser);
       } catch (err) {
+        strapi.log.error(err.message);
         throw new ApplicationError(err.message);
       }
 
@@ -261,6 +271,7 @@ module.exports = (plugin) => {
 
   plugin.controllers.user.changePassword = async (ctx) => {
     if (!ctx.state.user) {
+      strapi.log.error("You must be authenticated to reset your password");
       throw new ApplicationError(
         "You must be authenticated to reset your password"
       );
@@ -281,10 +292,14 @@ module.exports = (plugin) => {
     );
 
     if (!validPassword) {
+      strapi.log.error("The provided current password is invalid");
       throw new ValidationError("The provided current password is invalid");
     }
 
     if (currentPassword === password) {
+      strapi.log.error(
+        "Your new password must be different than your current password"
+      );
       throw new ValidationError(
         "Your new password must be different than your current password"
       );
@@ -303,6 +318,7 @@ module.exports = (plugin) => {
       await validateResetPasswordBody(ctx.request.body);
 
     if (password !== passwordConfirmation) {
+      strapi.log.error("Passwords do not match");
       throw new ValidationError("Passwords do not match");
     }
 
@@ -311,6 +327,7 @@ module.exports = (plugin) => {
       .findOne({ where: { resetPasswordToken: code } });
 
     if (!user) {
+      strapi.log.error("Incorrect code provided");
       throw new ValidationError("Incorrect code provided");
     }
 
@@ -350,7 +367,7 @@ module.exports = (plugin) => {
     const userInfo = await sanitizeUser(user, ctx);
 
     const resetPasswordToken = crypto.randomBytes(64).toString("hex");
-    console.log("resetPasswordToken", resetPasswordToken);
+    strapi.log.debug(`resetPasswordToken - ${resetPasswordToken}`);
 
     const resetPasswordSettings = _.get(
       emailSettings,
