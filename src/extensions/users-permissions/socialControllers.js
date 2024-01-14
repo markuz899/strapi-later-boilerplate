@@ -43,8 +43,8 @@ module.exports = (plugin) => {
     const { social } = ctx.query;
 
     const SOCIAL = {
-      facebook: `https://www.facebook.com/v14.0/dialog/oauth?client_id=${process.env.FACEBOOK_APP_ID}&redirect_uri=http://localhost:3000/auth/facebook/callback&scope=email`,
-      google: `https://accounts.google.com/o/oauth2/auth?client_id=${process.env.GOOGLE_APP_ID}&redirect_uri=http://localhost:3000/auth/google/callback&response_type=code&scope=profile%20email`,
+      facebook: `https://www.facebook.com/v14.0/dialog/oauth?client_id=${process.env.FACEBOOK_APP_ID}&redirect_uri=${process.env.FRONTEND_URL}/auth/facebook/callback&scope=email`,
+      google: `https://accounts.google.com/o/oauth2/auth?client_id=${process.env.GOOGLE_APP_ID}&redirect_uri=${process.env.FRONTEND_URL}/auth/google/callback&response_type=code&scope=profile%20email`,
     };
 
     ctx.send({ redirectUrl: SOCIAL[social] });
@@ -54,7 +54,7 @@ module.exports = (plugin) => {
     const { social, code } = ctx.query;
 
     const SOCIAL = {
-      facebook: `https://graph.facebook.com/v14.0/oauth/access_token?client_id=${process.env.FACEBOOK_APP_ID}&redirect_uri=http://localhost:3000/auth/facebook/callback&client_secret=${process.env.FACEBOOK_SECRET_APP_ID}&code=${code}`,
+      facebook: `https://graph.facebook.com/v14.0/oauth/access_token?client_id=${process.env.FACEBOOK_APP_ID}&redirect_uri=${process.env.FRONTEND_URL}/auth/facebook/callback&client_secret=${process.env.FACEBOOK_SECRET_APP_ID}&code=${code}`,
       google: `https://oauth2.googleapis.com/token`,
     };
 
@@ -75,7 +75,7 @@ module.exports = (plugin) => {
         params.append("client_secret", process.env.GOOGLE_SECRET_APP_ID);
         params.append(
           "redirect_uri",
-          "http://localhost:3000/auth/google/callback"
+          "${process.env.FRONTEND_URL}/auth/google/callback"
         );
         params.append("grant_type", "authorization_code");
         const response = await axios.post(SOCIAL[social], params);
