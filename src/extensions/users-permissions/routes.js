@@ -3,7 +3,7 @@ module.exports = (plugin) => {
   // SOCIAL ROUTES
   plugin.routes["content-api"].routes.push({
     method: "GET",
-    path: "/social/user/auth",
+    path: "/social/auth",
     handler: "user.socialOauthRedirect",
     config: {
       prefix: "",
@@ -12,7 +12,7 @@ module.exports = (plugin) => {
 
   plugin.routes["content-api"].routes.push({
     method: "GET",
-    path: "/social/user/callback",
+    path: "/social/callback",
     handler: "user.socialOauthCallback",
     config: {
       prefix: "",
