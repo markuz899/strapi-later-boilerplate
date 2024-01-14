@@ -1,5 +1,24 @@
 // routes.js
 module.exports = (plugin) => {
+  // SOCIAL ROUTES
+  plugin.routes["content-api"].routes.push({
+    method: "GET",
+    path: "/social/user/auth",
+    handler: "user.socialOauthRedirect",
+    config: {
+      prefix: "",
+    },
+  });
+
+  plugin.routes["content-api"].routes.push({
+    method: "GET",
+    path: "/social/user/callback",
+    handler: "user.socialOauthCallback",
+    config: {
+      prefix: "",
+    },
+  });
+
   // AUTH ROUTES
   plugin.routes["content-api"].routes.push({
     method: "POST",
