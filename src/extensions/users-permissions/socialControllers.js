@@ -75,7 +75,7 @@ module.exports = (plugin) => {
         params.append("client_secret", process.env.GOOGLE_SECRET_APP_ID);
         params.append(
           "redirect_uri",
-          "${process.env.FRONTEND_URL}/auth/google/callback"
+          `${process.env.FRONTEND_URL}/auth/google/callback`
         );
         params.append("grant_type", "authorization_code");
         const response = await axios.post(SOCIAL[social], params);
